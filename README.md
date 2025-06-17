@@ -1,5 +1,8 @@
 # Malnutrition Detection in South Sudanese Children: Machine Learning Optimization Study
 
+## Data Source
+- This project uses the Children Malnutrition Dataset from Kaggle: https://www.kaggle.com/datasets/albertkingstone/children-malnutrition-dataset
+
 ## Problem Definition
 
 Child malnutrition in South Sudan presents a critical public health challenge, with:
