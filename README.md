@@ -100,9 +100,37 @@ Child malnutrition in South Sudan presents a critical public health challenge, w
 2. **Resource-Constrained Settings**: 
    - Instance 2 provides best accuracy-efficiency balance
    - XGBoost for hardware with limited compute capabilities
+  
+## Final Model Performance on Test Set
 
-3. **Future Optimization**:
-   ```python
-   # Class weighting for severe malnutrition focus
-   class_weights = {0: 1, 1: 2, 2: 3}
-   model.fit(X_train, y_train, class_weight=class_weights)
+| Model | Accuracy | F1 Score | Precision | Recall |
+|-------|----------|----------|-----------|--------|
+| **SVM (Tuned)** | **0.9720** | **0.9717** | **0.9717** | **0.9720** |
+| Optimized NN (Instance 5) | 0.9680 | 0.9676 | 0.9676 | 0.9680 |
+| Simple NN (No Optimization) | 0.9667 | 0.9666 | 0.9666 | 0.9667 |
+| Optimized NN (Instance 4) | 0.9667 | 0.9663 | 0.9663 | 0.9667 |
+| XGBoost (Tuned) | 0.9613 | 0.9608 | 0.9606 | 0.9613 |
+| Optimized NN (Instance 1) | 0.9640 | 0.9639 | 0.9640 | 0.9640 |
+| Optimized NN (Instance 2) | 0.9533 | 0.9523 | 0.9543 | 0.9533 |
+| Optimized NN (Instance 3) | 0.9307 | 0.9245 | 0.9306 | 0.9307 |
+
+## Key Findings and Conclusions
+
+1. **Best Performing Model**:
+   - **SVM (Tuned)** achieved the highest accuracy (97.20%) and most balanced metrics
+   - Saved as `saved_models/svm_tuned.pkl` for deployment
+   - Particularly effective at distinguishing moderate vs severe malnutrition cases
+
+2. **Neural Network Insights**:
+   - Optimized NN Instance 5 (RMSprop + 25% dropout) was the best neural network (96.80% accuracy)
+   - Simple NN surprisingly outperformed several optimized NNs (96.67% accuracy)
+   - Instance 3 performed worst (93.07%), confirming L1 regularization's negative impact
+
+## **Conclusion**:
+   - Based on the test set evaluation, the SVM (Tuned) model achieved the highest accuracy of 0.9720. It also demonstrated strong performance across other metrics like F1-score, precision, and recall, indicating its effectiveness in classifying malnutrition statuses.
+
+The optimized neural network models, while showing promising results during validation, had slightly lower performance on the unseen test data compared to the tuned SVM. Optimized NN Instance 2 and Simple NN (No Optimization) performed comparably to XGBoost, while Optimized NN Instances 1, 3, 4, and 5 had slightly lower accuracy on the test set.
+
+The confusion matrices and classification reports provide a more detailed view of each model's performance on each class (moderate, normal, severe). This information can be used to understand where each model excels and where there might be areas for improvement, especially concerning the less represented classes like 'severe' malnutrition.
+
+Overall, the SVM (Tuned) model is the best performing model on this dataset for this classification task based on the evaluation metrics.
