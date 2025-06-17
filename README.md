@@ -1,4 +1,17 @@
-# Malnutrition Classification Project: Optimization Analysis
+# Malnutrition Detection in South Sudanese Children: Machine Learning Optimization Study
+
+## Problem Definition
+
+Child malnutrition in South Sudan presents a critical public health challenge, with:
+- **22% of children under five** suffering from wasting (acute malnutrition)
+- **7% experiencing severe acute malnutrition** (SAM)
+- **45% of under-5 mortality** linked to malnutrition-related causes
+
+**Key Challenges in Traditional Screening:**
+1. **Equipment Shortages**: Rural clinics often lack MUAC tapes and scales
+2. **Trained Personnel Gap**: Limited healthcare workers for anthropometric measurements
+3. **Diagnostic Delays**: Manual processes delay life-saving interventions
+4. **Measurement Variability**: Subjective interpretations of nutritional status
 
 ## Optimized Neural Network Results
 | Instance | Optimizer | Regularizer | Epochs | Early Stopping | Layers | Learning Rate | Dropout | Accuracy | F1 Score | Precision | Recall |
