@@ -9,6 +9,16 @@
 ## Data Source
 
 * This project uses the Children Malnutrition Dataset from Kaggle: [https://www.kaggle.com/datasets/albertkingstone/children-malnutrition-dataset](https://www.kaggle.com/datasets/albertkingstone/children-malnutrition-dataset)
+## Dataset Description:
+- This dataset, malnutrition_data (1).csv, contains clinical and anthropometric data for child malnutrition classification. Each row represents a single child, with the following features:
+
+   - age_months: Age of the child in months (continuous).
+   - weight_kg: Weight in kilograms (continuous).
+   - height_cm: Height in centimeters (continuous).
+   - muac_cm: Mid-upper arm circumference in centimeters (continuous).
+   - bmi: Body Mass Index, calculated from height and weight (continuous).
+nutrition_status: The nutritional status label for each child, which can be "normal", "moderate", or "severe".
+This dataset can be used to train and evaluate machine learning models for classifying child malnutrition status based on standard anthropometric measurements. It is suitable for supervised learning tasks, especially multiclass classification, and is structured in a standard tabular (CSV) format.
 
 ## Problem Definition
 
