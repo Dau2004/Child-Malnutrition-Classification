@@ -1,5 +1,11 @@
 # Malnutrition Detection in South Sudanese Children: Machine Learning Optimization Study
 
+- Author: Chol Daniel
+- Course: Introduction to Machine Learning
+- Institution: African Leadership University
+
+
+
 ## Data Source
 
 * This project uses the Children Malnutrition Dataset from Kaggle: [https://www.kaggle.com/datasets/albertkingstone/children-malnutrition-dataset](https://www.kaggle.com/datasets/albertkingstone/children-malnutrition-dataset)
