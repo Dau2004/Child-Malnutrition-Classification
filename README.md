@@ -3,7 +3,8 @@
 - Author: Chol Daniel
 - Course: Introduction to Machine Learning
 - Institution: African Leadership University
-
+# Video Link
+https://youtu.be/S8qr4t3lIqI
 
 
 ## Data Source
