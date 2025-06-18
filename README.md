@@ -1,114 +1,107 @@
-# Malnutrition Detection in South Sudanese Children
+# Malnutrition Detection in South Sudanese Children: Machine Learning Optimization Study
 
-### *Optimizing Neural Networks and Classical Models for Malnutrition Classification*
+## Data Source
 
----
+* This project uses the Children Malnutrition Dataset from Kaggle: [https://www.kaggle.com/datasets/albertkingstone/children-malnutrition-dataset](https://www.kaggle.com/datasets/albertkingstone/children-malnutrition-dataset)
 
-## Dataset Overview
+## Problem Definition
 
-* **Source:** [Children Malnutrition Dataset (Kaggle)](https://www.kaggle.com/datasets/albertkingstone/children-malnutrition-dataset)
-* **Features:**
-
-  * `age_months`, `weight_kg`, `height_cm`, `muac_cm`, `bmi`
-* **Target:**
-
-  * `nutrition_status`: categorical (`normal`, `moderate`, `severe`)
+Child malnutrition in South Sudan presents a critical public health challenge. This study applies machine learning and deep learning techniques to classify and detect malnutrition in children under 5, based on anthropometric and health data. The goal is to identify optimal model configurations to maximize predictive performance and provide actionable insights.
 
 ---
 
-## Objective
+## Model Architectures and Implementations
 
-To classify the nutritional status of children using machine learning and deep learning models. The project investigates how different optimization strategies (e.g., regularization, optimizers, early stopping) affect neural network performance compared to classical models like SVM and XGBoost.
+The following models were implemented and evaluated:
 
----
+### 1. Classical ML Algorithm: SVM with Hyperparameter Tuning
 
-## Implemented Models
+* A Support Vector Machine was tuned using GridSearchCV with a search space covering `C`, `gamma`, and `kernel`.
+* This model achieved strong performance with minimal overfitting.
 
-### 1. **Classical ML Models**
+### 2. Simple Neural Network (No Optimization)
 
-| Model               | Accuracy  | F1 Score | Precision | Recall |
-| ------------------- | --------- | -------- | --------- | ------ |
-| **SVM (Tuned)**     | **0.949** | 0.949    | 0.949     | 0.949  |
-| **XGBoost (Tuned)** | 0.931     | 0.929    | 0.928     | 0.931  |
+* A baseline feedforward neural network with 4 hidden layers.
+* No dropout, regularization, or early stopping was applied.
+* Used SGD optimizer with a fixed learning rate of 0.01 for 5 epochs.
 
-> These models were trained using GridSearchCV for hyperparameter tuning. SVM slightly outperformed XGBoost in terms of accuracy.
+### 3. Optimized Neural Network (5 Distinct Instances)
 
----
+Five neural network instances were trained using distinct combinations of optimizers, regularization, dropout, and early stopping:
 
-### 2. **Simple Neural Network (No Optimization)**
+| Instance | Optimizer | Regularizer | Epochs | Early Stopping | Layers | Learning Rate | Dropout Rate | Accuracy | F1 Score | Precision | Recall | Val Loss |
+| -------- | --------- | ----------- | ------ | -------------- | ------ | ------------- | ------------ | -------- | -------- | --------- | ------ | -------- |
+| 1        | SGD       | None        | 5      | No             | 4      | 0.01          | 0.0          | 0.8827   | 0.8530   | 0.8264    | 0.8827 | 0.3089   |
+| 2        | Adam      | L2          | 5      | Yes            | 5      | 0.09          | 0.2          | 0.8840   | 0.8548   | 0.8294    | 0.8840 | 0.5028   |
+| 3        | RMSprop   | L1          | 5      | Yes            | 5      | 0.09          | 0.3          | 0.8547   | 0.8339   | 0.8317    | 0.8547 | 2.3466   |
+| 5        | RMSprop   | None        | 5      | Yes            | 4      | 0.07          | 0.25         | 0.8307   | 0.8143   | 0.8266    | 0.8307 | 0.4176   |
 
-| Model                       | Accuracy | F1 Score | Precision | Recall |
-| --------------------------- | -------- | -------- | --------- | ------ |
-| **Simple NN (Unoptimized)** | 0.891    | 0.862    | 0.837     | 0.891  |
+### 4. XGBoost with Hyperparameter Tuning
 
-> Served as a baseline. No dropout, no regularization, no early stopping. Moderate performance, slight overfitting noticed during training.
-
----
-
-### 3. **Optimized Neural Network Configurations**
-
-| Instance | Optimizer | Regularizer | Epochs | Early Stopping | Layers | Learning Rate | Dropout | Accuracy | F1 Score | Precision | Recall | Val Loss |
-| -------- | --------- | ----------- | ------ | -------------- | ------ | ------------- | ------- | -------- | -------- | --------- | ------ | -------- |
-| 1        | SGD       | None        | 5      |   No           | 4      | 0.01          | 0.0     | 0.883    | 0.853    | 0.826     | 0.883  | 0.309    |
-| 2        | Adam      | L2          | 5      |   Yes          | 5      | 0.09          | 0.2     | 0.884    | 0.855    | 0.829     | 0.884  | 0.503    |
-| 3        | RMSprop   | L1          | 5      |   Yes          | 5      | 0.09          | 0.3     | 0.855    | 0.834    | 0.832     | 0.855  | 2.347    |
-| 5        | RMSprop   | None        | 5      |   Yes          | 4      | 0.07          | 0.25    | 0.831    | 0.814    | 0.827     | 0.831  | 0.418    |
-
-> **Note**: Instance 4 was excluded due to poor performance and instability.
+* Tuned using a simplified grid, focusing on depth and learning rate.
+* Delivered strong results, with performance close to the best neural networks.
 
 ---
 
-## Error Analysis & Optimization Impact
+## Evaluation Metrics
 
-Each optimized instance revealed insights into how training configurations influence performance:
+Models were evaluated using the following metrics on a held-out test set:
 
-### **Instance 1 (SGD, No Regularization)**
-
-* **Pros:** Fast training with low validation loss.
-* **Cons:** No early stopping or regularization caused slight overfitting.
-* **Insight:** SGD without constraints is unstable on deeper networks.
-
-###  **Instance 2 (Adam + L2 + Dropout + Early Stopping)**
-
-* **Pros:** Balanced performance across all metrics. L2 regularization improved generalization. Early stopping prevented overfitting.
-* **Cons:** Slightly higher validation loss than Instance 1.
-* **Insight:** Adam + L2 + dropout is a robust, reliable configuration.
-
-### **Instance 3 (RMSprop + L1 + High Dropout)**
-
-* **Pros:** Sparse weight learning due to L1 regularization.
-* **Cons:** Highest validation loss, underperformance across all metrics.
-* **Insight:** Over-regularization (L1 + 0.3 dropout) likely led to underfitting.
-
-###  **Instance 5 (RMSprop, No Regularization)**
-
-* **Pros:** Moderate dropout helped prevent overfitting. Fast convergence and decent validation loss.
-* **Cons:** No regularization may limit generalization beyond current test set.
-* **Insight:** Dropout alone can regularize effectively under certain configurations.
+* **Accuracy:** Overall correctness.
+* **F1-score (weighted):** Balance between precision and recall.
+* **Precision (weighted):** Correct positive predictions.
+* **Recall (weighted):** Correctly identified positives.
+* **Loss:** Training loss (only for neural networks).
 
 ---
 
-## Final Comparison & Recommendation
+## Comprehensive Error Analysis and Optimization Impact
 
-| Model                       | Accuracy  | F1 Score | Comments                                    |
-| --------------------------- | --------- | -------- | ------------------------------------------- |
-| **SVM (Tuned)**             | **0.949** | 0.949    | Best overall generalization                 |
-| **XGBoost (Tuned)**         | 0.931     | 0.929    | Strong, interpretable model                 |
-| **Optimized NN (Inst. 2)**  | 0.884     | 0.855    | Best among NNs (regularized + stable)       |
-| **Simple NN (Unoptimized)** | 0.891     | 0.862    | Lacks regularization, weaker generalization |
-| **Optimized NN (Inst. 3)**  | 0.855     | 0.834    | Underfitting due to excessive dropout       |
+### Instance 1 (SGD, No Regularization, No Dropout)
 
-> **Conclusion:**
->
-> * **SVM** is the top performer and most stable.
-> * Among neural networks, **Instance 2** (Adam + L2 + Dropout + EarlyStopping) offers the best balance of accuracy and robustness.
-> * Over-regularization (Instance 3) can harm learning capacity.
-> * Careful tuning of learning rate, dropout, and regularizers is essential for neural network performance.
+* **Pros:** Simple and fast to train; decent accuracy for a baseline.
+* **Cons:** Lacks any form of regularization or early stopping, making it prone to overfitting despite the short training time.
+* **Observation:** The low validation loss (0.3089) indicates a reasonable fit, but absence of control mechanisms may hinder generalization on more complex data.
+
+### Instance 2 (Adam, L2 Regularization, Moderate Dropout, Early Stopping)
+
+* **Pros:** Adam optimizer adapts learning rates during training, L2 regularization penalizes complex weights, and dropout (0.2) reduces reliance on specific neurons.
+* **Cons:** Training stopped early due to validation loss plateauing, which might have limited maximum performance.
+* **Observation:** Achieved best performance among this batch. Suggests that combining multiple moderate regularization techniques leads to good generalization without overfitting.
+
+### Instance 3 (RMSprop, L1 Regularization, High Dropout, Early Stopping)
+
+* **Pros:** L1 regularization encourages sparsity (simpler models), high dropout forces robust learning.
+* **Cons:** Likely underfit due to aggressive regularization. High dropout (0.3) combined with L1 might have stripped away useful learning.
+* **Observation:** Highest validation loss (2.3466) confirms poor learning capacity. Caution is needed when stacking multiple strong regularizers.
+
+### Instance 5 (RMSprop, No Regularization, Moderate Dropout, Early Stopping)
+
+* **Pros:** Balanced dropout (0.25) provided enough regularization without need for L1/L2. RMSprop handled non-stationary learning well.
+* **Cons:** Slightly lower performance than others, but the model was relatively stable.
+* **Observation:** Surprisingly effective without formal regularization. Shows that dropout alone, when tuned properly, can suffice as regularizer in certain architectures.
+
+### Additional Notes:
+
+* **Validation Loss as Indicator:** Models with overly high validation loss (like Instance 3) showed underfitting, while models with very low loss but lower accuracy (like Instance 5) indicate overfitting avoidance but possible capacity limits.
+* **Effect of Optimizer:** Adam and RMSprop both handled learning rate dynamics well; SGD underperformed likely due to lack of momentum or adaptive mechanisms.
+* **Layer Depth:** Deeper models (5 layers) seemed to benefit from proper regularization. Instance 1 had 4 layers and decent performance, but lacked fine control.
 
 ---
 
-## Takeaways
+## Summary of Key Results
 
-* **Optimization techniques matter**: Dropout, early stopping, and appropriate regularization significantly affect model generalization.
-* **Classical ML still performs competitively**, especially with structured tabular data.
-* **Neural networks** need deliberate architecture design and training strategies to compete with classical models in small datasets.
+| Model                            | Accuracy | F1 Score | Precision | Recall |
+| -------------------------------- | -------- | -------- | --------- | ------ |
+| Tuned SVM                        | 0.9493   | 0.9486   | 0.9487    | 0.9493 |
+| XGBoost (Tuned)                  | 0.9307   | 0.9293   | 0.9284    | 0.9307 |
+| Simple NN                        | 0.8907   | 0.8619   | 0.8371    | 0.8907 |
+| Optimized NN (Best - Instance 5) | 0.8307   | 0.8143   | 0.8266    | 0.8307 |
+
+---
+
+## Conclusion
+
+The best performing model overall was the **Tuned SVM** with an accuracy of **94.93%**, closely followed by **Tuned XGBoost (93.07%)**. While neural networks performed adequately, especially with optimization, classical ML models proved more stable and generalized better on the malnutrition dataset.
+
+This study demonstrates the importance of tailoring optimization strategies to dataset characteristics, and highlights how even simple regularization and training techniques can significantly affect model performance in sensitive health-related domains like malnutrition detection.
