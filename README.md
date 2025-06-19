@@ -122,3 +122,78 @@ Models were evaluated using the following metrics on a held-out test set:
 The best performing model overall was the **Tuned SVM** with an accuracy of **94.93%**, closely followed by **Tuned XGBoost (93.07%)**. While neural networks performed adequately, especially with optimization, classical ML models proved more stable and generalized better on the malnutrition dataset.
 
 This study demonstrates the importance of tailoring optimization strategies to dataset characteristics, and highlights how even simple regularization and training techniques can significantly affect model performance in sensitive health-related domains like malnutrition detection.
+
+
+
+
+
+
+
+## 🛠️ How to Use This Repository
+
+This repository provides all the code, models, and resources required to replicate the **Malnutrition Detection** study and use the trained classifiers.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/malnutrition-detection-ml.git
+cd malnutrition-detection-ml
+```
+
+### =2. Install Required Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Or manually install main packages:
+
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn xgboost tensorflow keras
+```
+
+###  3. Run the Notebook
+
+```bash
+jupyter notebook
+```
+
+Then open `Malnutrition_Classification_Project.ipynb` and run all cells sequentially.
+
+### 💾 4. Use the Saved Models
+
+Load trained models from the `models/` directory:
+
+**Keras Neural Network:**
+
+```python
+from tensorflow.keras.models import load_model
+model = load_model("models/optimized_nn_instance5.h5")
+```
+
+**XGBoost Model:**
+
+```python
+import joblib
+xgb_model = joblib.load("models/xgboost_model.pkl")
+```
+
+Use to predict:
+
+```python
+predictions = model.predict(X_new)
+```
+
+### 📁 Repository Structure
+
+```
+├──  children_malnutrition.csv
+├── models/
+│   ├── optimized_nn_instance5.h5
+│   └── xgboost_model.pkl
+├── Malnutrition_Classification_Project.ipynb
+├── README.md
+```
+
+---
+
