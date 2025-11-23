@@ -1,199 +1,138 @@
-# Malnutrition Detection in South Sudanese Children: Machine Learning Optimization Study
+# **Malnutrition Detection in South Sudanese Children**  
+### *Machine Learning Optimization Study*
 
-- Author: Chol Daniel
-- Course: Introduction to Machine Learning
-- Institution: African Leadership University
-# Video Link
-https://youtu.be/S8qr4t3lIqI
+**Author:** Chol Daniel  
+**Course:** Introduction to Machine Learning  
+**Institution:** African Leadership University  
 
-
-## Data Source
-
-* This project uses the Children Malnutrition Dataset from Kaggle: [https://www.kaggle.com/datasets/albertkingstone/children-malnutrition-dataset](https://www.kaggle.com/datasets/albertkingstone/children-malnutrition-dataset)
-## Dataset Description:
-- This dataset, malnutrition_data (1).csv, contains clinical and anthropometric data for child malnutrition classification. Each row represents a single child, with the following features:
-
-   - age_months: Age of the child in months (continuous).
-   - weight_kg: Weight in kilograms (continuous).
-   - height_cm: Height in centimeters (continuous).
-   - muac_cm: Mid-upper arm circumference in centimeters (continuous).
-   - bmi: Body Mass Index, calculated from height and weight (continuous).
-nutrition_status: The nutritional status label for each child, which can be "normal", "moderate", or "severe".
-This dataset can be used to train and evaluate machine learning models for classifying child malnutrition status based on standard anthropometric measurements. It is suitable for supervised learning tasks, especially multiclass classification, and is structured in a standard tabular (CSV) format.
-
-## Problem Definition
-
-Child malnutrition in South Sudan presents a critical public health challenge. This study applies machine learning and deep learning techniques to classify and detect malnutrition in children under 5, based on anthropometric and health data. The goal is to identify optimal model configurations to maximize predictive performance and provide actionable insights.
+📺 **Video Presentation:**  
+https://youtu.be/S8qr4t3lIqI  
 
 ---
 
-## Model Architectures and Implementations
+## **📌 Project Overview**
 
-The following models were implemented and evaluated:
+Child malnutrition remains one of South Sudan’s most urgent health challenges, where delayed diagnosis and limited diagnostic tools place thousands of children at risk. This project explores how **machine learning and deep learning** models can support earlier detection of malnutrition using standard anthropometric measurements.
 
-### 1. Classical ML Algorithm: SVM with Hyperparameter Tuning
-
-* A Support Vector Machine was tuned using GridSearchCV with a search space covering `C`, `gamma`, and `kernel`.
-* This model achieved strong performance with minimal overfitting.
-
-### 2. Simple Neural Network (No Optimization)
-
-* A baseline feedforward neural network with 4 hidden layers.
-* No dropout, regularization, or early stopping was applied.
-* Used SGD optimizer with a fixed learning rate of 0.01 for 5 epochs.
-
-### 3. Optimized Neural Network (5 Distinct Instances)
-
-Five neural network instances were trained using distinct combinations of optimizers, regularization, dropout, and early stopping:
-
-| Instance | Optimizer | Regularizer | Epochs | Early Stopping | Layers | Learning Rate | Dropout Rate | Accuracy | F1 Score | Precision | Recall | Val Loss |
-| -------- | --------- | ----------- | ------ | -------------- | ------ | ------------- | ------------ | -------- | -------- | --------- | ------ | -------- |
-| 1        | SGD       | None        | 5      | No             | 4      | 0.01          | 0.0          | 0.8827   | 0.8530   | 0.8264    | 0.8827 | 0.3089   |
-| 2        | Adam      | L2          | 5      | Yes            | 5      | 0.09          | 0.2          | 0.8840   | 0.8548   | 0.8294    | 0.8840 | 0.5028   |
-| 3        | RMSprop   | L1          | 5      | Yes            | 5      | 0.09          | 0.3          | 0.8547   | 0.8339   | 0.8317    | 0.8547 | 2.3466   |
-| 5        | RMSprop   | None        | 5      | Yes            | 4      | 0.07          | 0.25         | 0.8307   | 0.8143   | 0.8266    | 0.8307 | 0.4176   |
-
-### 4. XGBoost with Hyperparameter Tuning
-
-* Tuned using a simplified grid, focusing on depth and learning rate.
-* Delivered strong results, with performance close to the best neural networks.
+The project reflects my broader mission to develop AI-driven decision-support tools that strengthen health systems in low-resource settings.
 
 ---
 
-## Evaluation Metrics
+## **📂 Dataset**
 
-Models were evaluated using the following metrics on a held-out test set:
+**Source:** Children Malnutrition Dataset (Kaggle)  
+https://www.kaggle.com/datasets/albertkingstone/children-malnutrition-dataset  
 
-* **Accuracy:** Overall correctness.
-* **F1-score (weighted):** Balance between precision and recall.
-* **Precision (weighted):** Correct positive predictions.
-* **Recall (weighted):** Correctly identified positives.
-* **Loss:** Training loss (only for neural networks).
+### Features:
+- `age_months`
+- `weight_kg`
+- `height_cm`
+- `muac_cm` (Mid–Upper Arm Circumference)
+- `bmi`
+- `nutrition_status` (normal, moderate, severe)
 
----
-
-## Comprehensive Error Analysis and Optimization Impact
-
-### Instance 1 (SGD, No Regularization, No Dropout)
-
-* **Pros:** Simple and fast to train; decent accuracy for a baseline.
-* **Cons:** Lacks any form of regularization or early stopping, making it prone to overfitting despite the short training time.
-* **Observation:** The low validation loss (0.3089) indicates a reasonable fit, but absence of control mechanisms may hinder generalization on more complex data.
-
-### Instance 2 (Adam, L2 Regularization, Moderate Dropout, Early Stopping)
-
-* **Pros:** Adam optimizer adapts learning rates during training, L2 regularization penalizes complex weights, and dropout (0.2) reduces reliance on specific neurons.
-* **Cons:** Training stopped early due to validation loss plateauing, which might have limited maximum performance.
-* **Observation:** Achieved best performance among this batch. Suggests that combining multiple moderate regularization techniques leads to good generalization without overfitting.
-
-### Instance 3 (RMSprop, L1 Regularization, High Dropout, Early Stopping)
-
-* **Pros:** L1 regularization encourages sparsity (simpler models), high dropout forces robust learning.
-* **Cons:** Likely underfit due to aggressive regularization. High dropout (0.3) combined with L1 might have stripped away useful learning.
-* **Observation:** Highest validation loss (2.3466) confirms poor learning capacity. Caution is needed when stacking multiple strong regularizers.
-
-### Instance 5 (RMSprop, No Regularization, Moderate Dropout, Early Stopping)
-
-* **Pros:** Balanced dropout (0.25) provided enough regularization without need for L1/L2. RMSprop handled non-stationary learning well.
-* **Cons:** Slightly lower performance than others, but the model was relatively stable.
-* **Observation:** Surprisingly effective without formal regularization. Shows that dropout alone, when tuned properly, can suffice as regularizer in certain architectures.
-
-### Additional Notes:
-
-* **Validation Loss as Indicator:** Models with overly high validation loss (like Instance 3) showed underfitting, while models with very low loss but lower accuracy (like Instance 5) indicate overfitting avoidance but possible capacity limits.
-* **Effect of Optimizer:** Adam and RMSprop both handled learning rate dynamics well; SGD underperformed likely due to lack of momentum or adaptive mechanisms.
-* **Layer Depth:** Deeper models (5 layers) seemed to benefit from proper regularization. Instance 1 had 4 layers and decent performance, but lacked fine control.
+These features match WHO standards for malnutrition classification.
 
 ---
 
-## Summary of Key Results
+## **🎯 Problem Definition**
 
-| Model                            | Accuracy | F1 Score | Precision | Recall |
-| -------------------------------- | -------- | -------- | --------- | ------ |
-| Tuned SVM                        | 0.9493   | 0.9486   | 0.9487    | 0.9493 |
-| XGBoost (Tuned)                  | 0.9307   | 0.9293   | 0.9284    | 0.9307 |
-| Simple NN                        | 0.8907   | 0.8619   | 0.8371    | 0.8907 |
-| Optimized NN (Best - Instance 5) | 0.8307   | 0.8143   | 0.8266    | 0.8307 |
+**Objective:**  
+Build and optimize multiple ML and DL models to classify children into *normal*, *moderate*, or *severe* malnutrition categories.
+
+**Why it matters:**  
+Many health workers in South Sudan operate without digital tools that support fast, accurate assessment. By comparing classical ML models with deep neural networks, this study identifies which approaches offer reliable performance suitable for real-world deployment.
 
 ---
 
-## Conclusion
+## **🧠 Model Architectures Implemented**
 
-The best performing model overall was the **Tuned SVM** with an accuracy of **94.93%**, closely followed by **Tuned XGBoost (93.07%)**. While neural networks performed adequately, especially with optimization, classical ML models proved more stable and generalized better on the malnutrition dataset.
+### **1. Support Vector Machine (SVM) — Tuned**
+- Tuned using GridSearchCV (`C`, `gamma`, `kernel`)  
+- Most accurate and stable model  
+- **Accuracy: 94.93%**
 
-This study demonstrates the importance of tailoring optimization strategies to dataset characteristics, and highlights how even simple regularization and training techniques can significantly affect model performance in sensitive health-related domains like malnutrition detection.
+### **2. Baseline Neural Network**
+- 4 hidden layers  
+- SGD optimizer  
+- Baseline benchmark before optimization  
 
+### **3. Optimized Neural Networks (5 Instances)**  
+Each instance varied in:
+- Optimizer (Adam, RMSprop, SGD)
+- L1/L2 regularization  
+- Dropout (0.2–0.3)  
+- Learning rate  
+- Early stopping  
+- Model depth  
 
+This iterative experimentation mirrors my learning process—adjusting regularization, understanding underfitting, and tuning for stability.
 
+### **4. XGBoost — Tuned**
+- Tuned depth + learning rate  
+- **Accuracy: 93.07%**
 
+---
 
+## **📊 Evaluation Metrics**
 
+Models evaluated on a held-out test set using:
 
-## 🛠️ How to Use This Repository
+- Accuracy  
+- Precision  
+- Recall  
+- F1 Score  
+- Validation Loss (for NN models)  
 
-This repository provides all the code, models, and resources required to replicate the **Malnutrition Detection** study and use the trained classifiers.
+These metrics evaluate both correctness and real-world reliability.
 
-### 1. Clone the Repository
+---
 
+## **🔍 Optimization Insights**
+
+### **Best Classical Model:**  
+✅ **Tuned SVM**  
+- Most stable across experiments  
+- Best accuracy and generalization  
+- Suitable for low-resource deployments
+
+### **Best Neural Network:**  
+⚖️ **Instance with balanced dropout (0.25) & RMSprop**  
+- Good stability  
+- Lower risk of overfitting  
+- Moderate complexity
+
+### **Key Lessons**
+- Over-regularization (e.g., high dropout + L1) leads to underfitting  
+- Neural networks require careful tuning to match simpler models  
+- Classical ML (SVM/XGBoost) outperformed deep networks on this dataset  
+- Validation loss patterns were crucial for diagnosing under/overfitting  
+
+---
+
+## **🏆 Results Summary**
+
+| Model                            | Accuracy | F1 Score |
+| -------------------------------- | -------- | -------- |
+| **Tuned SVM**                    | **0.9493** | **0.9486** |
+| XGBoost (Tuned)                  | 0.9307   | 0.9293   |
+| Simple Neural Network            | 0.8907   | 0.8619   |
+| Optimized NN (Best Instance)     | 0.8307   | 0.8143   |
+
+---
+
+## **📌 Conclusion**
+
+This study demonstrates that **classical ML approaches outperform deep learning models** for this malnutrition dataset. Their stability, simplicity, and high accuracy make them ideal for real-world diagnostic support tools in South Sudan.
+
+The insights gained from tuning, evaluating, and analyzing these models directly shaped my long-term direction:  
+→ building AI-powered decision-support tools for health workers in low-resource environments.
+
+---
+
+## **🛠️ How to Run This Project**
+
+### **1. Clone the Repository**
 ```bash
 git clone https://github.com/your-username/malnutrition-detection-ml.git
 cd malnutrition-detection-ml
-```
-
-### =2. Install Required Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-Or manually install main packages:
-
-```bash
-pip install pandas numpy matplotlib seaborn scikit-learn xgboost tensorflow keras
-```
-
-###  3. Run the Notebook
-
-```bash
-jupyter notebook
-```
-
-Then open `Malnutrition_Classification_Project.ipynb` and run all cells sequentially.
-
-### 💾 4. Use the Saved Models
-
-Load trained models from the `models/` directory:
-
-**Keras Neural Network:**
-
-```python
-from tensorflow.keras.models import load_model
-model = load_model("models/optimized_nn_instance5.h5")
-```
-
-**XGBoost Model:**
-
-```python
-import joblib
-xgb_model = joblib.load("models/xgboost_model.pkl")
-```
-
-Use to predict:
-
-```python
-predictions = model.predict(X_new)
-```
-
-### 📁 Repository Structure
-
-```
-├──  children_malnutrition.csv
-├── models/
-│   ├── optimized_nn_instance5.h5
-│   └── xgboost_model.pkl
-├── Malnutrition_Classification_Project.ipynb
-├── README.md
-```
-
----
-
